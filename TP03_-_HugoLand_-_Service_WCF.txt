@@ -1,206 +1,0 @@
-
-DÉPARTEMENT INFORMATIQUE
-Développement avec base de données
-420 - 4DB - HY
-(2 - 2 - 2)
-TP03 - Hugo LAND - Service WCF Core
-Enseignant
-Pier Luc Ducharme, MIO
-SESSION Hiver 2025
-
-
-
-1. SOMMAIRE
-ButImplémenter un jeu vidéo de type RPG avec Entity Framework Core, WPF et un service WCF.Objectifs* Utiliser d'un modèle relationnel de base de données dans le but de créer une application. 
-* Utiliser l'entité Framework Core pour gérer les éléments du CRUD d'un jeu.
-Durée15 hrs (3 étudiants × 5 heures-personnes)Pondération15 %RemiseSéance 13Notes* Ce travail se fait en équipe de maximum 3 étudiants.
-* Le même dépôt GitHub des TPs précédents sera réutilisé..
-* Les PIEA et PDEA s'appliquent.
-* Le plagiat, sous toutes ses formes, est interdit.2. REMISE
-a) Évaluation du travail de vos collègues :
-Dans le but d'être juste avec tous vos collègues, vous devrez évaluer la performance de vos collègues dans ce travail. Vous devrez décider, par consensus, la distribution du résultat du travail sachant que vous avez 300 % à distribuer entre trois étudiants.
-1. Vous allez donc assigner un pourcentage de participation au travail à chaque membre de l'équipe. Par exemple, si les trois membres de l'équipe (Alice, Bob, Claude) ont travaillé équitablement, alors Alice aura 100 %, Bob 100 % et Claude 100 %. Par contre, si les trois membres de l'équipe (Alice, Bob, Claude) n'ont pas travaillé équitablement, alors on pourrait avoir Alice 100 %, Bob 130 % et Claude 70 %. Ce pourcentage servira à calculer la note associée à chaque étudiant de telle sorte que la note sera multipliée par ce facteur (Note du travail * facteur). Ce pourcentage devra être décidé par consensus en équipe. 
-2. Si vous n'arrivez pas à obtenir un consensus, j'utiliserai un ratio entre le nombre de lignes de code utile développé (pas de commentaire, de vide ou de changement de ligne) par une personne divisée par le nombre total de lignes de code utile. 
-Dans tous les cas, vous devez me remettre un document (avec une page de présentation et table des matières si nécessaire) qui précise la distribution et explique votre choix.
-
-
-
-b) Devis à remettre :
-Ce travail peut se faire en équipe maximum de trois (3) personnes. Dans le cadre du travail pratique #2, il vous est demandé de :
-1. Le code source de votre application. 
-Ce travail devra être remis électroniquement sur GitHub Classroom au plus tard à la date indiquée dans LÉA. Vous devez faire une nouvelle branche " remise_tp3 " pour le travail pratique #3, le HEAD de cette branche sera corrigé.
-
-
-
-3. PRÉAMBULE
-Le but de ce travail est de créer les éléments de base du jeu Hugo Land. Ce travail sera réutilisé tout au long de la session et permettra d'acquérir de l'expérience avec les notions vues en classe.
-Vous trouverez avec l'énoncé du travail un exemple de l'application que nous modifierons pour vous donner un aperçu du genre de jeu que nous réaliserons.
-Globalement, voici les étapes de développement :
-* Lors du TP01, nous réaliserons les fonctions de bases permettant d'interagir avec la base de données en utilisant l'Entity Framework Core.
-* Lors du TP02, nous réaliserons un éditeur qui permettra de faire la conception des Mondes. Ce travail réutilisera les fonctions développées dans le TP01.
-* Lors du TP03, nous réaliserons le jeu en mode client-serveur.
-* Lors du TP04, nous complèterons le jeu, mais avec la gestion de la concurrence pour le rendre multijoueur.
-
-4. DESCRIPTION
-Le but de ce travail est de créer la première partie de la section client du jeu Hugo Land. Vous devrez créer un service WCF Core qui permettra de communiquer entre la section client du jeu et la partie serveur (Entité Framework Core). 
-Pour vous donner un coup de main, je vous fournis un jeu existant qui implémente " presque " le jeu que vous devez créer. Le code contenu dans la solution de départ n'est pas le mien, vous pouvez donc le critiquer et le modifier tant que vous le voulez. 
-Cependant, je vous conseille de partir de cette solution, car cela vous conscientisera à :
-1) Utiliser du code existant qui ne respecte pas les standards du cégep. Ce qui sera le cas lorsque vous serez sur le marché du travail,
-2) Utilisé du code qui n'est pas parfait,
-3) L'importance de bien documenter vos applications,
-4) L'importance de bien tester vos applications.
-a) Sommaire
-Dans ce travail, vous devrez,
-- Vérifier que toutes les opérations effectuées au serveur réussissent ;
-- Vérifier que toutes les données inscrites par un utilisateur soient valides ;
-- Charger/Afficher uniquement un sous-ensemble de tuiles à l'utilisateur (écran 8x8) ;
-NE PAS charger le Monde en totalité, car celui-ci peut être immense.
-- Gérer les déplacements du Héros entre les écrans ;
-- Gérer les collisions : la position d'un Héros ne peut pas être la même qu'un mur ou d'un objet ;
-- Sauvegarder rapidement la position du Héros à chacun de ses déplacements ;
-- Réaliser toutes les requêtes/commandes au Serveur via un Service (ici, WCF Core).
-Dans ce travail, vous ne devrez pas, 
-- Gérer le multijoueur ;
-- Gérer l'inventaire d'un Héros ;
-- Gérer les actions d'un Héros (ramassage d'objet, combat, etc.) ;
-- Gérer la déconnexion d'un Utilisateur.
-
-
-b) Cas d'utilisation
-CU01Un Utilisateur (incluant Administrateur) peut s'authentifier. (1 points)Préalable- L'Application doit avoir été démarrée.
-- Un Utilisateur ou un Administrateur doit avoir été créé.Processus1) L'Application doit afficher un formulaire invitant l'Utilisateur à s'authentifier dans une nouvelle fenêtre. 
-2) L'Utilisateur doit inscrire un nom d'utilisateur et mot de passe valides. 
-3) L'Utilisateur doit soumettre le formulaire en sélectionnant l'option " Se connecter ".
-4) L'Application tente d'authentifier l'Utilisateur.
-4.1) L'authentification réussie.
-4.1.1) L'Application doit connecter l'Utilisateur.
-4.1.2) L'Application doit fermer le formulaire.
-4.2) L'authentification échouée.
-4.2.1) L'Application doit afficher un message d'erreur à l'Utilisateur.
-Retour à l'étape 1).Résultat- Un Utilisateur ou Administrateur s'est authentifié.
-
-
-CU02Un Utilisateur (incluant Administrateur) peut créer un Héros. (2 points)Préalable- Un Utilisateur ou un Administrateur doit s'être authentifié.
-- Un Monde doit avoir été créé.
-- Une Classe doit avoir été créée.Processus1) L'Utilisateur doit sélectionner l'option " Créer un héros... ".
-2) L'Application doit générer des valeurs aléatoires pour les propriétés du Héros :
-* Force : dommage maximum pouvant occasionner [pts], 
-* Dextérité : probabilité d'occasionner le dommage maximum [%],
-* Vitalité : vitesse de récupération de l'intégrité [pts/minutes], et
-* Intégrité : capacité à absorbe des dommages [pts].
-3) L'Application doit afficher un formulaire invitant l'Utilisateur à créer un nouveau Héros dans une nouvelle fenêtre. 
-Au sein de cette fenêtre, les valeurs totales des propriétés du futur Héros doivent être affichées sans que l'Utilisateur puisse les modifier.
-(Valeurs totales = Valeur de base (Classe) + Valeur aléatoires (Générées))
-4) L'Utilisateur doit inscrire un nom valide, choisir une Classe, et choisir un Monde dans lequel le Héros évoluera. 
-4.1) Chaque fois qu'une nouvelle Classe est choisie, l'Application doit calculer de nouveau les valeurs des propriétés du Héros.
-5) L'Utilisateur peut sélectionner l'option " Générer de nouveau... " pour générer de nouveau les valeurs aléatoires des propriétés du Héros.
-6) L'Utilisateur doit soumettre le formulaire en sélectionnant l'option " Créer ".
-7) L'Application tente de créer le nouveau Héros.
-7.1) La création réussie.
-7.1.1) L'Application doit fermer le formulaire.
-7.2) La création échoue.
-7.2.1) L'Application doit afficher un message d'erreur à l'utilisateur.
-Retour à l'étape 3).Résultat- Un Héros a été créé.
-
-
-CU03Un Utilisateur (incluant Administrateur) peut supprimer un de ses Héros. (1 points)Préalable- Un Utilisateur ou un Administrateur doit s'être authentifié.
-- Un Héros associé à l'Utilisateur doit avoir été créé.Processus1) L'Utilisateur doit sélectionner l'option " Supprimer un héros... ".
-2) L'Application doit afficher un formulaire invitant l'Utilisateur à supprimer un Héros.
-3) L'Utilisateur doit sélectionner un de ses Héros à supprimer.
-4) L'Utilisateur doit soumettre le formulaire en sélectionnant l'option " Supprimer ".
-5) L'Application doit afficher un formulaire invitant l'Utilisateur à confirmer la suppression de son Héros dans une nouvelle fenêtre.
-5.1) L'utilisateur confirme la suppression en sélectionnant l'option " Confirmer ".
-5.1.1) L'Application tente de supprimer le Héros.
-5.1.1.1) La suppression réussie.
-5.1.1.1.1) L'Application doit fermer le formulaire.
-5.1.1.2) La suppression échoue.
-5.1.1.2.1) L'Application doit afficher un message d'erreur.
-Retour à l'étape 2).
-5.2) L'Utilisateur annule la suppression en sélectionnant l'option " Annuler ".
-5.2.1) L'Application doit fermer le formulaire de confirmation.
-Retour à l'étape 2).Résultat- Un Héros a été supprimé.
-
-
-CU04Un Administrateur (incluant Administrateur) peut créer une Classe. (2 points)Préalable- Un Utilisateur ou un Administrateur doit s'être authentifié.
-- Un Monde doit avoir été créé.Processus1) L'Administrateur doit sélectionner l'option " Créer une classe... ".
-2) L'Application doit afficher un formulaire invitant l'Administrateur à créer une nouvelle Classe dans une nouvelle fenêtre.
-3) L'Administrateur doit sélectionner le Monde associé à la Classe, inscrire un nom et une description valides ainsi qu'une valeur de base valide pour chacune des propriétés suivantes :
-* Force de base : dommage maximum pouvant occasionner [pts], 
-* Dextérité de base : probabilité d'occasionner le dommage maximum [%],
-* Vitalité de base : vitesse de récupération de l'intégrité [pts/minutes], et
-* Intégrité de base : capacité à absorbe des dommages [pts].
-4) L'Administrateur doit soumettre le formulaire en sélectionnant l'option " Créer ".
-4.1) La création réussie.
-4.1.1) L'Application doit fermer le formulaire.
-4.2) La création échoue.
-4.2.1) L'Application doit afficher un message d'erreur.
-Retour à l'étape 2).Résultat- Une Classe a été créée.
-
-
-CU05Un Administrateur peut naviguer à travers, modifier ou supprimer des Classes. (2 points)Préalable- Un Administrateur doit s'être authentifié.
-- Une Classe doit avoir été créée.Processus1) L'Administrateur doit sélectionner l'option " Modifier les classes... ".
-2) L'Application doit afficher un formulaire invitant l'Administrateur à naviguer à travers les différentes Classes créées (l'Administrateur doit pouvoir passer à la première, suivante, précédente et dernière Classe).
-3) L'Administrateur peut modifier le nom, la description, et les valeurs de base des propriétés de la Classe en inscrivant des informations valides.
-4) L'Administrateur peut sélectionner l'option " Sauvegarder ".
-5) L'Application tente de sauvegarder au sein du modèle la nouvelle Classe.
-5.1) La modification de la Classe réussie.
-5.2) La modification échoue.
-5.2.1) L'Application affiche un message d'erreur.
-Retour à l'étape 2).
-6) L'administrateur peut sélectionner l'option " Supprimer ".
-6.1) L'Application doit afficher un formulaire invitant l'Administrateur à confirmer la suppression de la Classe dans une nouvelle fenêtre.
-6.1.1) L'utilisateur confirme la suppression en sélectionnant l'option " Confirmer ".
-6.1.1.1) L'Application tente de supprimer la Classe.
-6.1.1.1.1) La suppression réussie.
-6.1.1.1.2) La suppression échoue.
-6.1.1.1.2.1. L'Application doit afficher un message d'erreur.
-Retour à l'étape 2).
-6.1.2) L'utilisateur annule la suppression en sélectionnant l'option " Annuler ".
-6.1.2.1) L'Application doit fermer le formulaire de confirmation.
-Retour à l'étape 2).Résultat- Une Classe a été modifiée ou supprimée.
-
-
-CU06Un Utilisateur (incluant Administrateur) peut démarrer une partie avec un Héros. 
-(3 points)Préalable- Un Utilisateur ou un Administrateur doit s'être authentifié.
-- Un Héros doit avoir été créé.Processus1) L'Utilisateur doit sélectionner l'option " Jouer... ".
-2) L'Application doit afficher un formulaire invitant l'Utilisateur à choisir le Héros avec lequel jouer dans une nouvelle fenêtre.
-3) L'administrateur doit sélectionner le Héros avec lequel jouer.
-4) L'Application tente de charger à partir du modèle le Monde associé au Héros.
-4.1) Le chargement réussi.
-4.1.1) L'Application doit fermer le formulaire.
-4.1.2) L'Application doit afficher Écran du Monde contenant le Héros.
-4.2) Le chargement échoue.
-4.2.1) L'Application doit afficher un message d'erreur.
-Retour à l'étape 2).Résultat- Un Écran du Monde centré sur le Héros a été affiché
-
-
-CU07Un Utilisateur (incluant Administrateur) peut déplacer un Héros. (4 points)Préalable- Un Écran du Monde avec le Héros doit être affiché.
-- Un ou plusieurs Objets ou Monstres peuvent être affiché.
-- Un ou plusieurs autres Héros peuvent être affiché.Processus1) L'Utilisateur doit appuyer sur une touche de déplacement (flèches).
-2) L'Application tente de déplacement le Héros.
-2.1) Le déplacement du Héros est possible.
-2.1.1) La nouvelle position du Héros est déjà affichée à l'écran.
-2.1.1.1) L'Application doit déplacer le Héros à l'écran.
-2.1.1.2) L'Application doit sauvegarder au sein du modèle la nouvelle position du Héros.
-2.1.2) La nouvelle position du Héros n'est pas affichée à l'écran.
-2.1.2.1) L'Application tente de charger à partir du modèle un nouvel écran.
-2.1.2.1.1) Le chargement du nouvel écran réussi.
-2.1.2.1.1.1. L'Application doit afficher le nouvel écran.
-2.1.2.1.1.2. L'Application doit déplacement le Héros à l'écran.
-2.1.2.1.1.3. L'Application doit sauvegarder au sein du modèle la nouvelle position du Héros.
-2.1.2.1.2) Le chargement du nouvel écran échoue.
-2.1.2.1.2.1. L'Application doit afficher un message d'erreur.
-Retour à l'étape 1).
-2.2) Le déplacement du Héros n'est pas possible (collision).Résultat- Un Écran du Monde avec le Héros est affiché.
-
-
-Cégep de Saint-HyacintheHiver 2025TP03
-
-
-
-420 - 4DB - HYDéveloppement avec base de donnéesPage 2 sur 9
-
-
-
-
-
